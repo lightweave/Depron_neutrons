@@ -15,7 +15,7 @@ library(ggplot2)
 
 # your path need to be here:
 setwd()
-# setwd('D:/Ivan/_flash backup 2014/SINP/DEPRON/lomonosov/oneday/student')
+setwd('D:/Ivan/_flash backup 2014/SINP/DEPRON/lomonosov/oneday/student/Depron_neutrons')
 
 
 
@@ -179,3 +179,20 @@ colr = rev(rainbow(n, start = 0, end = 4/6, alpha = 1))
 map(database="world")
 points(datafilter$longeo.center,datafilter$latgeo,cex = datafilter$n2,col=colr[datafilter$n2+1])
 
+
+11%/%5
+
+datan$minut<-(as.integer(datan$dt)%/%300)
+datan %>% group_by(minut) %>% summarise(sum1=sum(n1))
+datan.minutgr<-(datan %>% group_by(minut) %>% summarise(sum1=sum(na.exclude(n1))))
+plot(data=datan.minutgr,datan.minutgr$minut,datan.minutgr$sum1,type='h')
+
+datan.minutgr<-(datan %>% group_by(minut) %>% mutate(sum1=sum(n1)))
+
+plot(data=datan,datan$dt,SMOOTH_Triangle(datan$n1,60),type='h')
+
+
+map(database="world")
+points(datan$longeo.center,datan$latgeo,cex = SMOOTH_Triangle(datan$n1,60))
+map(database="world")
+points(datan$longeo.center,datan$latgeo,cex = datan$n1)
