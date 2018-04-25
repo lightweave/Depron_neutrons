@@ -26,6 +26,9 @@ summary(datan)
 plot(datan,dt,n1)
 datan <- read_tsv('y16_d  1_neu.tsv')
 
+datan <- read_tsv('y16_d214_neu.tsv')
+
+
 plot(data=datan,dt,n1)
 
 plot(data=datan,datan$dt,datan$n1)
@@ -109,7 +112,6 @@ colr = rev(rainbow(n, start = 0, end = 4/6, alpha = 1))
 pie(rep(1,n), col=colr)
 plot(datafilter$l,datafilter$b,cex=datafilter$n1,col=colr[datafilter$n1+1])
 points(datafilter$l,datafilter$b,cex=datafilter$n2,pch=0,col=colr[datafilter$n2+1])
-datafilter = datan[datan$l<10,datan$b>0.23,]
 
 n=5
 colr = rev(rainbow(n, start = 0, end = 4/6, alpha = 1))
@@ -196,3 +198,35 @@ map(database="world")
 points(datan$longeo.center,datan$latgeo,cex = SMOOTH_Triangle(datan$n1,60))
 map(database="world")
 points(datan$longeo.center,datan$latgeo,cex = datan$n1)
+
+
+
+
+
+#poisson test-------------------------------------------------------------------
+datafilter = datan[(datan$l<2)&(datan$b>0.23),]
+summary(datafilter)
+datafilter <- na.omit(datafilter)
+
+n=4
+colr = rev(rainbow(n, start = 0, end = 4/6, alpha = 1))
+map(database="world")
+points(datafilter$longeo.center,datafilter$latgeo,cex = datafilter$n2,col=colr[datafilter$n2+1])
+
+
+lambda<-mean(na.omit(datafilter$n1))
+x<- max(na.omit(datafilter$n1))
+dpois(2, lambda, log = FALSE)*nrow(datafilter)
+# [1] 0.6103154 
+nrow(datafilter[datafilter$n1==x,])
+# [1] 2
+
+# 0.007522084 2
+
+lambda<-mean(na.omit(datafilter$n2))
+x<- max(na.omit(datafilter$n2))
+dpois(x, lambda, log = FALSE)*nrow(datafilter)
+# [1] 24.1618
+nrow(datafilter[datafilter$n2==x,])
+# [1] 46
+# 0.3843149 1
